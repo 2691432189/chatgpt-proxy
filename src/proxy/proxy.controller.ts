@@ -1,4 +1,11 @@
-import { Controller, Query, Sse, MessageEvent } from '@nestjs/common';
+import {
+  Controller,
+  Query,
+  Sse,
+  MessageEvent,
+  Post,
+  Body,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ProxyService } from './proxy.service';
 import { ChatgptService } from '../chatgpt/chatgpt.service';
@@ -16,5 +23,17 @@ export class ProxyController {
     @Query('msgText') msgText: string,
   ): Observable<MessageEvent> {
     return this.proxyService.queryChatGpt(msgId, msgText, this.chatgptService);
+  }
+
+  @Post('autoSort')
+  autoSort(
+    @Body('sortList') sortList: any[],
+    @Body('questionList') questionList: any[],
+  ) {
+    return this.proxyService.autoSort(
+      sortList,
+      questionList,
+      this.chatgptService,
+    );
   }
 }
