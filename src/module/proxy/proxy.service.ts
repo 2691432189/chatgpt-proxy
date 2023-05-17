@@ -16,7 +16,7 @@ export class ProxyService {
           onProgress: (partialResponse) => {
             subscriber.next({
               data: partialResponse.text.replace(/\n/g, '<br>'),
-              type: 'text',
+              end: 0,
             });
           },
           parentMessageId: msgId,
@@ -24,17 +24,16 @@ export class ProxyService {
 
         subscriber.next({
           data: id.toString(),
-          type: 'end',
+          end: 1,
         });
       })();
     });
 
     return observable.pipe(
-      map(({ data, type }) => ({
+      map(({ data, end }) => ({
         data,
         id: randomSeries(9),
-        type,
-        retry: 5,
+        end,
       })),
     );
   }
@@ -63,7 +62,6 @@ export class ProxyService {
         }`,
         {
           completionParams: {
-            model: 'gpt-3.5-turbo',
             temperature: 0,
             presence_penalty: -2,
           },

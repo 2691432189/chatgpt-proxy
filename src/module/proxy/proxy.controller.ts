@@ -9,6 +9,7 @@ import {
 import { Observable } from 'rxjs';
 import { ProxyService } from './proxy.service';
 import { ChatgptService } from '../chatgpt/chatgpt.service';
+import { QueryChatGptDto, AutoSorDto } from './dto/proxy.dto';
 
 @Controller('proxy')
 export class ProxyController {
@@ -18,18 +19,16 @@ export class ProxyController {
   ) {}
 
   @Sse('chatgptSse')
-  queryChatGpt(
-    @Query('msgId') msgId: string,
-    @Query('msgText') msgText: string,
-  ): Observable<MessageEvent> {
+  queryChatGpt(@Query() queryData: QueryChatGptDto): Observable<MessageEvent> {
+    const { msgId, msgText } = queryData;
+
     return this.proxyService.queryChatGpt(msgId, msgText, this.chatgptService);
   }
 
   @Post('autoSort')
-  autoSort(
-    @Body('sortList') sortList: any[],
-    @Body('questionList') questionList: any[],
-  ) {
+  autoSort(@Body() bodyData: AutoSorDto) {
+    const { sortList, questionList } = bodyData;
+
     return this.proxyService.autoSort(
       sortList,
       questionList,

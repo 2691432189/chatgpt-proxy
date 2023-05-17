@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ProxyModule } from './proxy/proxy.module';
-import { ChatgptModule } from './chatgpt/chatgpt.module';
+import { ProxyModule } from './module/proxy/proxy.module';
+import { ChatgptModule } from './module/chatgpt/chatgpt.module';
 
 @Module({
   imports: [ProxyModule, ChatgptModule],
