@@ -2,8 +2,11 @@ import { IsString } from 'class-validator';
 
 export class QueryChatGptDto {
   @IsString()
-  test: string;
+  text: string;
 
   @IsString()
   id: string;
+
+  @IsString()
+  questionId: string;
 }
