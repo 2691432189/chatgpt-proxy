@@ -1,4 +1,4 @@
-import { IsString, IsArray } from 'class-validator';
+import { IsString, IsArray, isString } from 'class-validator';
 
 export class QueryChatGptDto {
   @IsString()
@@ -13,4 +13,11 @@ export class AutoSorDto {
 
   @IsArray()
   questionList: any[];
+}
+
+export class ChatgptDto {
+  @IsString()
+  msgText: string;
+
+  msgId: string;
 }

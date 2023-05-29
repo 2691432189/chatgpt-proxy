@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { ProxyService } from './proxy.service';
-import { QueryChatGptDto, AutoSorDto } from './dto/proxy.dto';
+import { QueryChatGptDto, AutoSorDto, ChatgptDto } from './dto/proxy.dto';
 
 @Controller('proxy')
 export class ProxyController {
@@ -26,5 +26,12 @@ export class ProxyController {
     const { sortList, questionList } = bodyData;
 
     return this.proxyService.autoSort(sortList, questionList);
+  }
+
+  @Post('chatgpt')
+  chatgpt(@Body() bodyData: ChatgptDto) {
+    const { msgText, msgId } = bodyData;
+
+    return this.proxyService.chatgpt(msgText, msgId);
   }
 }

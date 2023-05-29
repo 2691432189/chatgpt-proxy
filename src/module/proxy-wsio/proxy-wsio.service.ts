@@ -15,19 +15,21 @@ export class ProxyWsioService {
 
   queryChatGpt(msData) {
     const observable = new Observable((subscriber) => {
-      const chatgptProxy = this.chatgptService.queryChatGpt();
       (async () => {
-        const { id, text } = await chatgptProxy.sendMessage(msData.text, {
-          onProgress: (partialResponse) => {
-            subscriber.next({
-              event: 'message',
-              data: {
-                text: partialResponse.text,
-              },
-            });
+        const { id, text } = await this.chatgptService.sendMessage(
+          msData.text,
+          {
+            onProgress: (partialResponse) => {
+              subscriber.next({
+                event: 'message',
+                data: {
+                  text: partialResponse.text,
+                },
+              });
+            },
+            parentMessageId: msData.id,
           },
-          parentMessageId: msData.id,
-        });
+        );
 
         subscriber.next({
           event: 'message',

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, PayloadTooLargeException } from '@nestjs/common';
 
 @Injectable()
 export class ChatgptService {
@@ -8,7 +8,7 @@ export class ChatgptService {
     'return import(modulePath)',
   );
 
-  private openKey = '0fzYaZ';
+  private openKey = 'sk-7t';
 
   constructor() {
     this.importGpt();
@@ -17,15 +17,29 @@ export class ChatgptService {
   private async importGpt(): Promise<any> {
     const { ChatGPTAPI } = await this.importDynamic('chatgpt');
 
-    this.chatGptApi = new ChatGPTAPI({
-      apiKey: this.openKey,
-      completionParams: {
-        model: 'gpt-3.5-turbo',
-      },
-    });
+    try {
+      this.chatGptApi = new ChatGPTAPI({
+        apiKey: this.openKey,
+        completionParams: {
+          model: 'gpt-3.5-turbo',
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   queryChatGpt() {
     return this.chatGptApi;
+  }
+
+  async sendMessage(text, option) {
+    try {
+      return await this.chatGptApi.sendMessage(text, option);
+    } catch (error) {
+      throw new PayloadTooLargeException(
+        'chatgpt请求错误，这可能是因为token超出4096长度导致，可重设id解决。如无效则代理出现问题。',
+      );
+    }
   }
 }
