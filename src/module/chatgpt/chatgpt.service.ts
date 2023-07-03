@@ -8,7 +8,7 @@ export class ChatgptService {
     'return import(modulePath)',
   );
 
-  private openKey = 'sk-7t';
+  private openKey = '';
 
   constructor() {
     this.importGpt();
@@ -21,7 +21,7 @@ export class ChatgptService {
       this.chatGptApi = new ChatGPTAPI({
         apiKey: this.openKey,
         completionParams: {
-          model: 'gpt-3.5-turbo',
+          model: 'gpt-3.5-turbo-16k',
         },
       });
     } catch (error) {
